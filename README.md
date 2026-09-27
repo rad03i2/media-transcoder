@@ -1,171 +1,232 @@
+<div align="center">
+
+<img src="assets/project-cover.svg" alt="Media Transcoder — local-first FFmpeg transcoding toolkit by Radwan Abd alhady Ahmed" width="100%" />
+
+<br/>
+
+<img src="assets/project-logo.svg" alt="Media Transcoder logo" width="112" />
+
 # Media Transcoder
 
-A safe, local-first command-line toolkit for practical video and audio transcoding with FFmpeg. It provides repeatable presets, media inspection, batch conversion, dry runs, overwrite protection, and useful error reporting without uploading media anywhere.
+**A predictable, local-first FFmpeg workflow for video and audio.**
 
-> Author: **Radwan Abdulhadi Ahmed** · **رضوان عبدالهادي أحمد** · GitHub **@rad03i2**
+<div dir="rtl">
+<strong>أداة سطر أوامر محلية تجعل تحويل الفيديو والصوت عبر FFmpeg أوضح، أكثر أمانًا، وأسهل للتكرار.</strong>
+</div>
 
-## Why this project?
-Raw FFmpeg is powerful but repetitive commands and accidental overwrites are easy mistakes. Media Transcoder adds a small, testable Python layer for common workflows while keeping FFmpeg visible and in control.
+<br/>
 
-## Features
-- Convert a single video/audio file with named presets.
-- Batch-convert supported media while preserving relative directory structure.
-- Inspect streams, codecs and container metadata via FFprobe JSON.
-- `web`: H.264 + AAC + fast-start MP4-friendly settings.
-- `small`: H.265 + AAC for smaller video output.
-- `audio-mp3` and `audio-opus` extraction/transcoding presets.
-- `copy`: remux compatible streams without re-encoding.
-- Dry-run prints the exact FFmpeg command before doing work.
-- Existing outputs are protected unless `--overwrite` is explicit.
-- Input and output cannot be the same path.
-- Failed conversions remove partial output created by the failed process.
-- No cloud service, telemetry, account, token, or API key.
+[![CI](https://github.com/rad03i2/media-transcoder/actions/workflows/ci.yml/badge.svg)](https://github.com/rad03i2/media-transcoder/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/Python-3.10%2B-C6FF33?logo=python&logoColor=111111)
+![Version](https://img.shields.io/badge/version-1.0.0-17181C)
+![FFmpeg](https://img.shields.io/badge/FFmpeg-required-9B5CFF?logo=ffmpeg&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-17181C)
+![Processing](https://img.shields.io/badge/processing-local--first-C6FF33)
 
-## Requirements
-- Python 3.10+
-- FFmpeg and FFprobe installed and available on `PATH`
+**[العربية](README_AR.md) · [English](README_EN.md) · [Architecture](docs/ARCHITECTURE.md) · [Brand](docs/BRAND.md) · [Security](SECURITY.md)**
 
-Verify first:
-```bash
-ffmpeg -version
-ffprobe -version
+</div>
+
+---
+
+## A small control layer for a powerful media engine
+
+Media Transcoder wraps an installed **FFmpeg / FFprobe** toolchain with a focused Python CLI for repeatable everyday jobs. It does not hide FFmpeg behind a cloud service or a proprietary format: it builds explicit commands, validates paths, protects existing output, and keeps processing on the local machine.
+
+<table>
+<tr>
+<td width="25%"><strong>Convert</strong><br/><sub>Transcode a single video or audio file through named presets.</sub></td>
+<td width="25%"><strong>Inspect</strong><br/><sub>Read container, stream, and codec metadata through FFprobe JSON.</sub></td>
+<td width="25%"><strong>Batch</strong><br/><sub>Process supported files while preserving relative directory structure.</sub></td>
+<td width="25%"><strong>Preview</strong><br/><sub>Use dry-run mode to inspect the exact FFmpeg command before writing output.</sub></td>
+</tr>
+</table>
+
+## Signal path
+
+```text
+source media
+    │
+    ▼
+path + preset validation
+    │
+    ├── dry-run ───────► print FFmpeg command
+    │
+    ▼
+temporary sibling output
+    │
+    ▼
+FFmpeg process
+    │
+    ├── failure ───────► remove temporary output
+    │
+    ▼
+validate non-empty result
+    │
+    ▼
+replace final destination
 ```
 
-## Install
+The temporary output is created beside the destination and promoted only after FFmpeg succeeds. Existing output is protected unless `--overwrite` is explicitly requested.
+
+## Presets available now
+
+| Preset | Current behavior |
+|---|---|
+| `web` | H.264 video + AAC audio, CRF 23, medium preset, MP4 fast-start flag |
+| `small` | H.265 video + AAC audio, CRF 28, medium preset |
+| `audio-mp3` | Audio-only MP3 using `libmp3lame` |
+| `audio-opus` | Audio-only Opus using `libopus` at 128 kb/s |
+| `copy` | Stream copy / remux without re-encoding when the container is compatible |
+
+These are intentionally practical presets rather than a replacement for FFmpeg's complete option surface.
+
+## 30-second start
+
+> **Requirements:** Python 3.10+ plus `ffmpeg` and `ffprobe` available on `PATH`.
+
 ```bash
 git clone https://github.com/rad03i2/media-transcoder.git
 cd media-transcoder
 python -m venv .venv
 # Windows: .venv\Scripts\activate
 # Linux/macOS: source .venv/bin/activate
-pip install -e .
+python -m pip install -e .
 ```
 
-## Usage
-Inspect media:
+Verify the external tools:
+
+```bash
+ffmpeg -version
+ffprobe -version
+```
+
+## CLI recipes
+
+Inspect a media file:
+
 ```bash
 media-transcoder probe movie.mkv
 ```
 
-Preview a conversion without writing anything:
+Preview a conversion without creating output:
+
 ```bash
 media-transcoder convert movie.mkv movie.mp4 --preset web --dry-run
 ```
 
-Convert:
+Convert for common web playback:
+
 ```bash
 media-transcoder convert movie.mkv movie.mp4 --preset web
 ```
 
-Extract MP3 audio:
+Extract or transcode audio to MP3:
+
 ```bash
 media-transcoder convert interview.mkv interview.mp3 --preset audio-mp3
 ```
 
-Batch convert, including subdirectories:
+Batch-convert a directory recursively:
+
 ```bash
 media-transcoder batch ./incoming ./converted --preset web --ext .mp4 --recursive
 ```
 
 Use `--overwrite` only when replacing an existing destination is intentional.
 
-## Supported discovery inputs
-MP4, MKV, MOV, AVI, WebM, M4V, MP3, WAV, FLAC, M4A, OGG and Opus. FFmpeg may support additional individual inputs; the batch scanner intentionally uses a conservative allow-list.
+## Batch discovery
 
-## Project structure
-```text
-src/media_transcoder/core.py   FFmpeg/FFprobe engine, presets and safety checks
-src/media_transcoder/cli.py    CLI and batch workflow
-src/media_transcoder/__init__.py
- tests/                         automated behavior tests
-.github/workflows/ci.yml       cross-platform Python test matrix
-```
+The batch scanner currently discovers:
 
-## Testing
+`MP4` · `MKV` · `MOV` · `AVI` · `WebM` · `M4V` · `MP3` · `WAV` · `FLAC` · `M4A` · `OGG` · `Opus`
+
+FFmpeg itself can support additional formats for individual conversions; the batch scanner intentionally uses a conservative allow-list.
+
+## Local-first safety model
+
+- Media is processed through locally installed FFmpeg / FFprobe.
+- The project makes no network calls and requires no account, token, or API key.
+- Input and output paths cannot be the same.
+- Existing destinations are rejected unless `--overwrite` is present.
+- Commands are passed to `subprocess` as argument arrays rather than shell strings.
+- Failed jobs clean up the temporary output created by that attempt.
+
+For untrusted media, keep FFmpeg and the operating system updated. See [SECURITY.md](SECURITY.md).
+
+## Tests and CI
+
 ```bash
-pip install -e . pytest
+python -m pip install -e . pytest
 pytest -q
 ```
-CI runs the test suite on Windows, Linux and macOS with Python 3.10, 3.12 and 3.13. Unit tests mock tool discovery where appropriate, so core command-building tests do not require FFmpeg.
 
-## Privacy & security
-All processing is local. Filenames are passed to `subprocess` as argument arrays rather than shell command strings. The program does not upload media or collect telemetry. Treat untrusted media as potentially hostile input and keep FFmpeg updated. See `SECURITY.md` for reporting guidance.
+The repository currently tests command construction, overwrite protection, same-path rejection, failed-output preservation, media discovery, dry-run behavior, and empty batch handling.
 
-## Limitations
-- FFmpeg/FFprobe are external requirements and are not bundled.
-- Presets intentionally cover common workflows rather than every codec/filter option.
-- A container extension does not guarantee codec/container compatibility; FFmpeg remains the authority and returns an error when a combination is invalid.
-- The tool does not provide GPU-specific presets because availability differs substantially by machine.
+GitHub Actions runs the test suite on:
 
-## Contributing
-See `CONTRIBUTING.md`. Focus contributions on tested, portable workflows rather than adding opaque FFmpeg flags.
+| OS | Python |
+|---|---|
+| Ubuntu | 3.10 · 3.12 · 3.13 |
+| Windows | 3.10 · 3.12 · 3.13 |
+| macOS | 3.10 · 3.12 · 3.13 |
 
-## License
-MIT License. See `LICENSE`.
+Core command-building tests mock tool discovery where appropriate, so those tests do not require an FFmpeg installation.
 
-## Author
-**Radwan Abdulhadi Ahmed**  
-**رضوان عبدالهادي أحمد**  
-GitHub: **@rad03i2**
+## Project structure
+
+```text
+media-transcoder/
+├── assets/
+│   ├── project-cover.svg
+│   └── project-logo.svg
+├── docs/
+│   ├── ARCHITECTURE.md
+│   └── BRAND.md
+├── src/media_transcoder/
+│   ├── __init__.py
+│   ├── cli.py
+│   └── core.py
+├── tests/
+│   ├── test_cli.py
+│   └── test_core.py
+├── .github/
+│   ├── ISSUE_TEMPLATE/
+│   ├── PULL_REQUEST_TEMPLATE.md
+│   └── workflows/ci.yml
+├── README_AR.md
+├── README_EN.md
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── SECURITY.md
+└── LICENSE
+```
+
+## Current boundaries
+
+FFmpeg and FFprobe are external dependencies and are not bundled. The project does not currently provide a desktop GUI, GPU-specific presets, a job queue, streaming-service integration, or automatic codec/container compatibility resolution. If FFmpeg rejects a requested combination, its error is surfaced to the user.
+
+## Documentation
+
+| Document | Purpose |
+|---|---|
+| [README_AR.md](README_AR.md) | Full Arabic guide |
+| [README_EN.md](README_EN.md) | Full English guide |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Runtime flow, responsibilities, and safety boundaries |
+| [docs/BRAND.md](docs/BRAND.md) | Visual identity and asset usage |
+| [CHANGELOG.md](CHANGELOG.md) | Notable release and repository changes |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Contribution workflow |
+| [SECURITY.md](SECURITY.md) | Security and private reporting guidance |
+| [LICENSE](LICENSE) | MIT License |
 
 ---
 
-# Media Transcoder — العربية
+<div align="center">
 
-أداة سطر أوامر محلية وآمنة لتحويل الفيديو والصوت باستخدام FFmpeg. الهدف هو جعل العمليات اليومية واضحة وقابلة للتكرار مع حماية من الاستبدال غير المقصود، ومعاينة الأمر قبل التنفيذ، وتحويل دفعات من الملفات، وفحص معلومات الوسائط دون رفع أي ملف إلى الإنترنت.
+### Built by رضوان عبدالهادي
 
-## لماذا هذا المشروع؟
-FFmpeg قوي جدًا، لكن أوامره الطويلة قد تتكرر ويصبح الخطأ في المسارات أو الاستبدال سهلًا. يضيف هذا المشروع طبقة Python صغيرة ومختبرة للعمليات الشائعة مع إبقاء FFmpeg نفسه محرك التنفيذ.
+**Radwan Abd alhady Ahmed · [@rad03i2](https://github.com/rad03i2)**
 
-## الميزات
-- تحويل ملف فيديو أو صوت واحد عبر إعدادات جاهزة واضحة.
-- تحويل جماعي للمجلدات مع إمكانية البحث داخل المجلدات الفرعية والحفاظ على بنيتها.
-- عرض معلومات الحاوية والمسارات والترميزات بصيغة JSON عبر FFprobe.
-- إعداد `web` للفيديو H.264 والصوت AAC مع fast-start.
-- إعداد `small` باستخدام H.265 لتقليل الحجم في الحالات المناسبة.
-- إعدادات لاستخراج/تحويل الصوت إلى MP3 أو Opus.
-- إعداد `copy` لإعادة التغليف دون إعادة ترميز عندما تكون الصيغ متوافقة.
-- `--dry-run` لعرض أمر FFmpeg دون إنشاء ملفات.
-- عدم استبدال الناتج الموجود إلا عند تمرير `--overwrite` صراحةً.
-- منع استخدام نفس المسار كمدخل ومخرج.
-- حذف الناتج الجزئي عند فشل FFmpeg.
-- لا حسابات ولا تتبع ولا مفاتيح API ولا خدمات سحابية.
+<sub>Local media in. Predictable FFmpeg commands. Local media out.</sub>
 
-## المتطلبات والتثبيت
-يتطلب Python 3.10 أو أحدث وFFmpeg/FFprobe ضمن `PATH`. بعد تثبيتهما:
-```bash
-git clone https://github.com/rad03i2/media-transcoder.git
-cd media-transcoder
-python -m venv .venv
-pip install -e .
-```
-
-## أمثلة الاستخدام
-```bash
-media-transcoder probe movie.mkv
-media-transcoder convert movie.mkv movie.mp4 --preset web --dry-run
-media-transcoder convert movie.mkv movie.mp4 --preset web
-media-transcoder convert interview.mkv interview.mp3 --preset audio-mp3
-media-transcoder batch ./incoming ./converted --preset web --ext .mp4 --recursive
-```
-
-## الاختبارات
-```bash
-pip install -e . pytest
-pytest -q
-```
-يوجد CI لاختبار المشروع على Windows وLinux وmacOS وإصدارات Python متعددة.
-
-## الخصوصية والأمان
-المعالجة محلية بالكامل. تُمرر المسارات إلى `subprocess` كمصفوفة معاملات وليس كسلسلة shell. لا يرفع البرنامج الوسائط ولا يجمع بيانات استخدام. يوصى بإبقاء FFmpeg محدثًا عند التعامل مع ملفات غير موثوقة.
-
-## القيود
-FFmpeg وFFprobe غير مدمجين داخل المشروع ويجب تثبيتهما منفصلين. الإعدادات الجاهزة تغطي الاستخدامات الشائعة ولا تحاول إخفاء كل خيارات FFmpeg. كما أن امتداد الملف وحده لا يضمن توافق الحاوية مع الترميز، وفي حالة عدم التوافق يعرض FFmpeg الخطأ الحقيقي.
-
-## المساهمة والترخيص
-راجع `CONTRIBUTING.md` للمساهمة و`SECURITY.md` للأمان. المشروع متاح بترخيص MIT الموجود في `LICENSE`.
-
-## المؤلف
-**Radwan Abdulhadi Ahmed**  
-**رضوان عبدالهادي أحمد**  
-GitHub: **@rad03i2**
+</div>

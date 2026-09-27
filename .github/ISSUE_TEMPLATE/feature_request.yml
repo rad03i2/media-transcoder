@@ -1,0 +1,48 @@
+name: Feature request
+description: Propose a focused, portable media-transcoding improvement
+title: "[Feature] "
+labels: []
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Workflow problem
+      description: What recurring media-transcoding task would this improve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe the CLI behavior, preset, validation, or workflow you are proposing.
+    validations:
+      required: true
+  - type: textarea
+    id: ffmpeg
+    attributes:
+      label: FFmpeg basis
+      description: If relevant, include the FFmpeg flags or capability behind the proposal.
+      render: shell
+    validations:
+      required: false
+  - type: dropdown
+    id: portability
+    attributes:
+      label: Expected portability
+      options:
+        - Cross-platform
+        - Windows-specific
+        - Linux-specific
+        - macOS-specific
+        - Unsure
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This request does not assume a GUI that the current project does not provide.
+          required: true
+        - label: I have not included private media, credentials, tokens, or sensitive metadata.
+          required: true

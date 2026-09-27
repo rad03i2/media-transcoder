@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="720" viewBox="0 0 1600 720" role="img" aria-labelledby="title desc">
+  <title id="title">Media Transcoder project cover</title>
+  <desc id="desc">Signal Flow identity for a local-first FFmpeg transcoding command-line toolkit by Radwan Abd alhady Ahmed.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#09090B"/>
+      <stop offset="0.55" stop-color="#111216"/>
+      <stop offset="1" stop-color="#17131F"/>
+    </linearGradient>
+    <linearGradient id="signal" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#C6FF33"/>
+      <stop offset="1" stop-color="#9B5CFF"/>
+    </linearGradient>
+    <radialGradient id="glowLime" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#C6FF33" stop-opacity=".23"/>
+      <stop offset="1" stop-color="#C6FF33" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowViolet" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#9B5CFF" stop-opacity=".23"/>
+      <stop offset="1" stop-color="#9B5CFF" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse">
+      <path d="M42 0H0V42" fill="none" stroke="#FFFFFF" stroke-opacity=".035"/>
+    </pattern>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="720" rx="36" fill="url(#bg)"/>
+  <rect width="1600" height="720" rx="36" fill="url(#grid)"/>
+  <circle cx="1228" cy="146" r="310" fill="url(#glowViolet)" filter="url(#soft)"/>
+  <circle cx="1115" cy="573" r="330" fill="url(#glowLime)" filter="url(#soft)"/>
+
+  <g transform="translate(92 92)">
+    <rect x="0" y="0" width="142" height="38" rx="19" fill="#C6FF33" fill-opacity=".12" stroke="#C6FF33" stroke-opacity=".45"/>
+    <circle cx="20" cy="19" r="5" fill="#C6FF33"/>
+    <text x="36" y="25" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="14" font-weight="700" letter-spacing="2.1" fill="#DFFF8A">LOCAL SIGNAL PIPELINE</text>
+
+    <text x="0" y="126" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="74" font-weight="800" fill="#F4F7F5">MEDIA</text>
+    <text x="0" y="204" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="74" font-weight="800" fill="url(#signal)">TRANSCODER</text>
+
+    <text x="2" y="258" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="23" font-weight="500" fill="#B8BDC5">Predictable video + audio transcoding through FFmpeg.</text>
+    <text x="2" y="294" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="23" fill="#7E858F">Probe · Convert · Batch · Dry-run · Local-first</text>
+
+    <g transform="translate(0 358)">
+      <rect width="536" height="132" rx="20" fill="#0F1013" stroke="#FFFFFF" stroke-opacity=".08"/>
+      <circle cx="28" cy="28" r="5" fill="#C6FF33"/>
+      <circle cx="46" cy="28" r="5" fill="#9B5CFF"/>
+      <circle cx="64" cy="28" r="5" fill="#454A52"/>
+      <text x="28" y="68" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="16" fill="#8B929C">$ media-transcoder convert input.mkv output.mp4</text>
+      <text x="28" y="98" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="16" font-weight="700" fill="#C6FF33">--preset web --dry-run</text>
+    </g>
+
+    <text x="0" y="556" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="17" font-weight="700" fill="#F4F7F5">رضوان عبدالهادي</text>
+    <text x="0" y="584" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="14" letter-spacing=".6" fill="#8B929C">A Radwan Abd alhady Project · github.com/rad03i2</text>
+  </g>
+
+  <g transform="translate(760 140)">
+    <path d="M87 220H236" stroke="#C6FF33" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 12" opacity=".8"/>
+    <path d="M372 220H520" stroke="#9B5CFF" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 12" opacity=".8"/>
+    <path d="M221 209l18 11-18 11" fill="none" stroke="#C6FF33" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M505 209l18 11-18 11" fill="none" stroke="#9B5CFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <g transform="translate(0 145)">
+      <rect width="118" height="150" rx="24" fill="#111317" stroke="#C6FF33" stroke-opacity=".55"/>
+      <rect x="22" y="28" width="74" height="58" rx="10" fill="#C6FF33" fill-opacity=".08" stroke="#C6FF33" stroke-opacity=".5"/>
+      <path d="M51 44l27 13-27 13z" fill="#C6FF33"/>
+      <path d="M24 112h11l6-15 9 29 10-21 8 9 8-16 7 14h13" fill="none" stroke="#C6FF33" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="59" y="135" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="13" font-weight="700" fill="#CBD0D5">INPUT</text>
+    </g>
+
+    <g transform="translate(236 96)">
+      <circle cx="68" cy="124" r="72" fill="#16131E" stroke="#9B5CFF" stroke-width="2" stroke-opacity=".75"/>
+      <circle cx="68" cy="124" r="52" fill="#0E0F12" stroke="#FFFFFF" stroke-opacity=".08"/>
+      <path d="M38 104h32l-12-12m12 12-12 12M98 144H66l12-12m-12 12 12 12" fill="none" stroke="url(#signal)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="68" y="226" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="13" font-weight="700" fill="#CBD0D5">FFMPEG</text>
+    </g>
+
+    <g transform="translate(520 145)">
+      <rect width="118" height="150" rx="24" fill="#111317" stroke="#9B5CFF" stroke-opacity=".6"/>
+      <rect x="22" y="28" width="74" height="58" rx="10" fill="#9B5CFF" fill-opacity=".09" stroke="#9B5CFF" stroke-opacity=".55"/>
+      <path d="M42 57h34" stroke="#9B5CFF" stroke-width="4" stroke-linecap="round"/>
+      <path d="M64 44l14 13-14 13" fill="none" stroke="#9B5CFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M25 112h9l7-9 8 16 10-28 10 35 10-21 8 7h8" fill="none" stroke="#9B5CFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="59" y="135" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="13" font-weight="700" fill="#CBD0D5">OUTPUT</text>
+    </g>
+
+    <g transform="translate(86 360)">
+      <rect width="468" height="104" rx="20" fill="#0D0E11" stroke="#FFFFFF" stroke-opacity=".08"/>
+      <text x="24" y="31" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="12" font-weight="700" letter-spacing="1.6" fill="#707782">SIGNAL MAP</text>
+      <path d="M26 70h24l12-26 18 50 18-37 16 19 18-46 18 63 19-38 17 15 18-31 17 43 17-24 18 9 17-20 20 31 18-45 17 57 18-29 20 10h38" fill="none" stroke="url(#signal)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  <path d="M1540 0v720" stroke="#C6FF33" stroke-width="3" opacity=".5"/>
+</svg>
